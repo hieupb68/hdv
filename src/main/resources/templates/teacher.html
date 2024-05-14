@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" href="teacher.css">
+</head>
+<body>
+
+<!-- Importing NavBar -->
+<div th:insert="navbar.html :: navbar"></div>
+
+<!-- Teacher Options -->
+<div class="container py-5">
+    <div class="text-center">
+        <h2>Teacher Options</h2>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <div class="col-auto">
+            <button class="btn btn-success me-3" onclick="uploadStudentList()">Upload Student List</button>
+            <button class="btn btn-success" onclick="uploadQuestionFile()">Upload Question File</button>
+        </div>
+    </div>
+
+    <!-- "Generate Test" button initially hidden -->
+    <div id="generateTestBtnContainer" class="row justify-content-center mt-3 d-none">
+        <div class="col-auto">
+            <button id="generateTestBtn" class="btn btn-primary" onclick="generateTestId()">Generate Test</button>
+        </div>
+    </div>
+</div>
+
+<!-- Importing Footer -->
+<div th:insert="footer.html :: footer"></div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Mammoth.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.4/mammoth.browser.min.js"></script>
+
+<!-- Your custom JavaScript code here -->
+<script>
+    async function uploadStudentList() {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.csv';
+        input.onchange = async function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append('file', file);
+                try {
+                    const response = await fetch('/api/files/uploadStudentList', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if (response.ok) {
+                        console.log('Student list uploaded successfully');
+                        // Show the "Generate Test" button after successful upload
+                        document.getElementById('generateTestBtnContainer').classList.remove('d-none');
+                    } else {
+                        console.error('Upload failed: ', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Upload failed: ', error);
+                }
+            }
+        };
+        input.click();
+    }
+
+    async function uploadQuestionFile() {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.docx';
+        input.onchange = async function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append('file', file);
+                try {
+                    const response = await fetch('/api/files/uploadQuestionFile', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if (response.ok) {
+                        console.log('Question file uploaded successfully');
+                        // Show the "Generate Test" button after successful upload
+                        document.getElementById('generateTestBtnContainer').classList.remove('d-none');
+                    } else {
+                        console.error('Upload failed: ', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Upload failed: ', error);
+                }
+            }
+        };
+        input.click();
+    }
+
+    async function generateTestId() {
+        try {
+            const response = await fetch('/api/generateRandomString');
+            if (response.ok) {
+                const classId = await response.text();
+                alert('Generated ClassID: ' + classId);
+            } else {
+                console.error('Error generating ClassID:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error generating ClassID:', error);
+        }
+    }
+</script>
+
+</body>
+</html>
