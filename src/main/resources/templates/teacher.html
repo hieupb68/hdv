@@ -30,7 +30,7 @@
     <!-- "Generate Test" button initially hidden -->
     <div id="generateTestBtnContainer" class="row justify-content-center mt-3 d-none">
         <div class="col-auto">
-            <button id="generateTestBtn" class="btn btn-primary" onclick="generateTestId()">Generate Test</button>
+            <button id="generateTestBtn" class="btn btn-primary" onclick="generateTest()">Generate Test</button>
         </div>
     </div>
 </div>
@@ -45,75 +45,56 @@
 
 <!-- Your custom JavaScript code here -->
 <script>
+    let studentsFile, questionsFile;
+
     async function uploadStudentList() {
-        var input = document.createElement('input');
+        const input = document.createElement('input');
         input.type = 'file';
-        input.accept = '.csv';
+        input.accept = '.docx';
         input.onchange = async function (event) {
-            var file = event.target.files[0];
+            const file = event.target.files[0];
+
             if (file) {
-                var formData = new FormData();
-                formData.append('file', file);
-                try {
-                    const response = await fetch('/api/files/uploadStudentList', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    if (response.ok) {
-                        console.log('Student list uploaded successfully');
-                        // Show the "Generate Test" button after successful upload
-                        document.getElementById('generateTestBtnContainer').classList.remove('d-none');
-                    } else {
-                        console.error('Upload failed: ', response.statusText);
-                    }
-                } catch (error) {
-                    console.error('Upload failed: ', error);
-                }
+                studentsFile = file;
+                document.getElementById("generateTestBtnContainer").classList.remove("d-none");
             }
         };
         input.click();
     }
 
     async function uploadQuestionFile() {
-        var input = document.createElement('input');
+        const input = document.createElement('input');
         input.type = 'file';
         input.accept = '.docx';
         input.onchange = async function (event) {
-            var file = event.target.files[0];
+            const file = event.target.files[0];
+
             if (file) {
-                var formData = new FormData();
-                formData.append('questions', file);
-                try {
-                    const response = await fetch('/api/files/upload', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    if (response.ok) {
-                        console.log('Question file uploaded successfully');
-                        // Show the "Generate Test" button after successful upload
-                        document.getElementById('generateTestBtnContainer').classList.remove('d-none');
-                    } else {
-                        console.error('Upload failed: ', response.statusText);
-                    }
-                } catch (error) {
-                    console.error('Upload failed: ', error);
-                }
+                questionsFile = file;
+                document.getElementById("generateTestBtnContainer").classList.remove("d-none");
             }
         };
         input.click();
     }
 
-    async function generateTestId() {
+    async function generateTest() {
         try {
-            const response = await fetch('/api/generateRandomString');
-            if (response.ok) {
-                const classId = await response.text();
-                alert('Generated ClassID: ' + classId);
-            } else {
-                console.error('Error generating ClassID:', response.statusText);
-            }
+            const formData = new FormData();
+            formData.append("students", studentsFile);
+            formData.append("questions", questionsFile);
+
+            const response = await fetch('/api/tests/generate', {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.ok) throw new Error();
+
+            const testId = await response.text();
+            alert('Generated TestID: ' + testId);
         } catch (error) {
             console.error('Error generating ClassID:', error);
+            throw error;
         }
     }
 </script>

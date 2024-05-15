@@ -15,7 +15,7 @@ public class Question {
 
     private String question;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = Answer_.QUESTION)
     private List<Answer> answers = new ArrayList<>();
 
     @ManyToOne

@@ -1,8 +1,13 @@
 package com.hdv.quizsystem.quizsystem.controller;
+import com.hdv.quizsystem.quizsystem.entity.Question;
+import com.hdv.quizsystem.quizsystem.entity.Quiz;
+import com.hdv.quizsystem.quizsystem.model.FileUploading;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -25,20 +30,5 @@ public class MainController {
     @GetMapping("/enterClass.html")
     public String enterClass() {
         return "enterClass.html";
-    }
-
-    @GetMapping("/generateClassId")
-    public ResponseEntity<String> generateClassId() {
-        // Generate a random class ID
-        String classId = generateRandomString();
-        // Return the class ID as a response
-        return ResponseEntity.ok(classId);
-    }
-
-    // Method to generate a random string
-    private String generateRandomString() {
-        // Generate a random string for the ClassID
-        String classId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8);
-        return classId;
     }
 }

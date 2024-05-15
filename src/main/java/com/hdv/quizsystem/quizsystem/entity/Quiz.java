@@ -14,7 +14,7 @@ public class Quiz {
 
     private String urlKey;
 
-    @OneToMany(mappedBy = Question_.QUIZ)
+    @OneToMany(mappedBy = Question_.QUIZ, cascade = CascadeType.ALL)
     private List<Question> questions;
 
     @ManyToMany
