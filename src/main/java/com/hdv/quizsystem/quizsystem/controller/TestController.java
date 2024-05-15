@@ -1,5 +1,6 @@
 package com.hdv.quizsystem.quizsystem.controller;
 
+import com.hdv.quizsystem.quizsystem.dto.QuizDTO;
 import com.hdv.quizsystem.quizsystem.entity.Answer;
 import com.hdv.quizsystem.quizsystem.entity.Question;
 import com.hdv.quizsystem.quizsystem.entity.Quiz;
@@ -12,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -62,6 +60,12 @@ public class TestController {
         } catch (IOException e) {
             throw new RuntimeException("Bad malformed files. Ensure you have correct format for each file", e);
         }
+    }
+
+    @GetMapping("/{urlKey}")
+    public QuizDTO getQuiz(@PathVariable String urlKey) {
+        Quiz found = quizRepository.findByUrlKey(urlKey).orElseThrow();
+        return new QuizDTO(found);
     }
 
     private String generateRandomString() {
