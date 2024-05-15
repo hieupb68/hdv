@@ -99,6 +99,7 @@
             if (!response.ok) throw new Error();
 
             const testId = await response.text();
+            console.log(testId);
             alert('Generated TestID: ' + testId);
         } catch (error) {
             console.error('Error generating ClassID:', error);

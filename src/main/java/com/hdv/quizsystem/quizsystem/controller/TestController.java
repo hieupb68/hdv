@@ -54,6 +54,7 @@ public class TestController {
             quiz.setQuestions(questions);
             quiz.setStudents(persistedStudents);
             quiz.setUrlKey(urlKey);
+            questions.forEach(question -> question.setQuiz(quiz));
             quizRepository.save(quiz);
 
             return urlKey;
@@ -115,7 +116,7 @@ public class TestController {
                     if (matcher.matches()) {
                         String key = matcher.group(1);
                         String ans = matcher.group(2);
-                        currentQuestion.getAnswers().add(new Answer(key, ans));
+                        currentQuestion.getAnswers().add(new Answer(key, ans, currentQuestion));
                     }
                 }
             }

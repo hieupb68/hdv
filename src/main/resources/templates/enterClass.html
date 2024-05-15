@@ -23,10 +23,15 @@
     <div class="text-box">
         <h1 class="mb-5 text-center">Spring Boot Quiz App</h1>
         <!-- Form for entering class code -->
-        <form class="card bg-dark py-5 px-4" action="/join-class" method="POST">
-            <p>Enter Class Code</p>
-            <input type="text" name="idClass" />
-            <a href="student.html" class="btn btn-primary">Join Class</a>
+        <form class="card bg-dark py-5 px-4" action="/join-test" method="POST">
+            <p>Enter Test Code</p>
+            <input type="text" name="testKey" />
+            <p>Enter Student Code</p>
+            <input type="text" name="studentCode" />
+            <button type="submit" class="btn btn-primary">Join Class</button>
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <strong>Error:</strong> <span th:text="${error}"></span>
+            </div>
         </form>
     </div>
 </div>

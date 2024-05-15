@@ -21,9 +21,10 @@ public class Answer {
     @ManyToOne
     private Question question;
 
-    public Answer(String key, String answer) {
+    public Answer(String key, String answer, Question question) {
         this.key = key;
         this.answer = answer;
+        this.question = question;
         this.correct = false;
     }
 }
