@@ -9,5 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class FileUploading {
-    private List<MultipartFile> files;
+    private MultipartFile students;
+    private MultipartFile questions;
 }
