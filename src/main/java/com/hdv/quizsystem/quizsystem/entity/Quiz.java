@@ -17,6 +17,6 @@ public class Quiz {
     @OneToMany(mappedBy = Question_.QUIZ, cascade = CascadeType.ALL)
     private List<Question> questions;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Student> students;
 }

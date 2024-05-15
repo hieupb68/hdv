@@ -55,8 +55,12 @@
             const file = event.target.files[0];
 
             if (file) {
+                console.log("Uploaded student list");
                 studentsFile = file;
-                document.getElementById("generateTestBtnContainer").classList.remove("d-none");
+
+                if (studentsFile && questionsFile) {
+                    document.getElementById("generateTestBtnContainer").classList.remove("d-none");
+                }
             }
         };
         input.click();
@@ -70,8 +74,12 @@
             const file = event.target.files[0];
 
             if (file) {
+                console.log("Uploaded question list");
                 questionsFile = file;
-                document.getElementById("generateTestBtnContainer").classList.remove("d-none");
+
+                if (studentsFile && questionsFile) {
+                    document.getElementById("generateTestBtnContainer").classList.remove("d-none");
+                }
             }
         };
         input.click();
